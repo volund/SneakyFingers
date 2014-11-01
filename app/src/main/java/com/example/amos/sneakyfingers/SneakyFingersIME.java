@@ -1,8 +1,5 @@
 package com.example.amos.sneakyfingers;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
 import android.inputmethodservice.InputMethodService;
 
 import android.content.Context;
@@ -12,15 +9,21 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.util.Log;
 
-public class SneakyFingersIME extends InputMethodService {
+public class SneakyFingersIME extends InputMethodService implements SneakyGestureReceiverListener {
     private View keyboardView;
+    private SneakyGestureReceiver leftReceiver;
+    private SneakyGestureReceiver rightReceiver;
 
     @Override
     public View onCreateInputView() {
         keyboardView = getLayoutInflater().inflate(R.layout.sneaky_keyboard, null);
 
-        SneakyGestureReceiver leftrcv = (SneakyGestureReceiver)keyboardView.findViewById(R.id.leftrcv);
-        SneakyGestureReceiver rightrcv = (SneakyGestureReceiver)keyboardView.findViewById(R.id.rightrcv);
+        leftReceiver = (SneakyGestureReceiver)keyboardView.findViewById(R.id.leftrcv);
+        rightReceiver = (SneakyGestureReceiver)keyboardView.findViewById(R.id.rightrcv);
+
+        leftReceiver.listener = this;
+        rightReceiver.listener = this;
+
         Button inputMethodsButton = (Button)keyboardView.findViewById(R.id.change_input_methods);
 
         inputMethodsButton.setOnClickListener(new OnClickListener() {
@@ -36,21 +39,18 @@ public class SneakyFingersIME extends InputMethodService {
                 }
             }});
 
-        leftrcv.setOnGestureRecognizedListener(new OnGestureRecognizedListener() {
-            @Override
-            public void gestureRecognized(String gesture) {
-                //enterCharacter(character);
-                Log.i("SFK", "got " + gesture);
-            }
-        });
-        rightrcv.setOnGestureRecognizedListener(new OnGestureRecognizedListener() {
-            @Override
-            public void gestureRecognized(String gesture) {
-                //enterCharacter(character);
-                Log.i("SFK", "got " + gesture);
-            }
-        });
         return keyboardView;
+    }
+
+    @Override
+    public void swipeChanged(SneakyGestureReceiver view, Direction dir) {
+        String source;
+        if (view == leftReceiver)
+            source = "Left";
+        else
+            source = "Right";
+
+        Log.i("SneakyFingers", source + ": " + dir);
     }
 }
 

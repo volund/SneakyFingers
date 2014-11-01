@@ -1,47 +1,38 @@
 package com.example.amos.sneakyfingers;
 
-import android.gesture.GestureOverlayView;
-import android.gesture.GestureOverlayView.OnGesturePerformedListener;
-import android.gesture.GestureLibrary;
-import android.gesture.GestureLibraries;
-import android.gesture.Gesture;
-import android.gesture.Prediction;
+import android.view.View;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 
-import java.util.List;
-
-
-public class SneakyGestureReceiver extends GestureOverlayView implements OnGesturePerformedListener  {
-    private final static double SCORE_TRESHOLD = 3.0;
-    private final GestureLibrary mGestureLibrary;
-    private OnGestureRecognizedListener mOnGestureRecognizedListener;
+public class SneakyGestureReceiver extends View  {
+    public MotionProcessorSimpleAverage motionProcessor;
+    public SneakyGestureReceiverListener listener;
 
     public SneakyGestureReceiver(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mGestureLibrary = GestureLibraries.fromRawResource(context, R.raw.gestures);
-        mGestureLibrary.load();
-        addOnGesturePerformedListener(this);
-    }
-
-    public void setOnGestureRecognizedListener(OnGestureRecognizedListener onGestureRecognizedListener) {
-        mOnGestureRecognizedListener = onGestureRecognizedListener;
+        motionProcessor = new MotionProcessorSimpleAverage();
     }
 
     @Override
-    public void onGesturePerformed(GestureOverlayView overlay, Gesture gesture) {
-        List<Prediction> predictions = mGestureLibrary.recognize(gesture);
-        Prediction bestPrediction = null;
-        if (predictions.size() > 0) {
-            bestPrediction = predictions.get(0);
+    public boolean onTouchEvent (MotionEvent event) {
+        boolean consumed = super.onTouchEvent(event);
+        /*
+        if (event.getActionMasked() == MotionEvent.ACTION_MOVE) {
+            Log.i("SFR", "got masked event: " + event + "consumed " + consumed);
+            Log.i("SFR", "X: " + event.getX(0) + " Y: " + event.getY(0));
+        }*/
+
+        motionProcessor.processMotionEvent(event);
+
+        if (motionProcessor.hasNewSwipeDirection()) {
+            if (listener != null)
+                listener.swipeChanged(this, motionProcessor.currentSwipeDirection);
         }
-        if (mOnGestureRecognizedListener != null && bestPrediction != null) {
-            if (bestPrediction.score > SCORE_TRESHOLD) {
-                mOnGestureRecognizedListener.gestureRecognized(bestPrediction.name);
-            } else {
-                clear(false);
-            }
-        }
+
+
+        return true;
     }
+
 }
