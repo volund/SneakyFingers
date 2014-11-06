@@ -62,8 +62,11 @@ public class MotionProcessorSimpleAverage {
     }
 
     public boolean hasNewSwipeDirection() {
+        /*
         return (currentSwipeDirection != Direction.NONE) &&
                 (currentSwipeDirection != previousSwipeDirection);
+                */
+        return (currentSwipeDirection != previousSwipeDirection);
     }
 
 
