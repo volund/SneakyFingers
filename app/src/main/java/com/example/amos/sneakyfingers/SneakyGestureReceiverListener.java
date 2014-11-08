@@ -5,4 +5,5 @@ package com.example.amos.sneakyfingers;
  */
 public interface SneakyGestureReceiverListener {
     public void swipeChanged(SneakyGestureReceiver view, Direction dir);
+    public void trigger();
 }

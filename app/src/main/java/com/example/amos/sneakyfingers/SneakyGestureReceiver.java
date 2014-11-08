@@ -28,7 +28,8 @@ public class SneakyGestureReceiver extends View  {
 
         if (motionProcessor.hasNewSwipeDirection()) {
             if (listener != null)
-                listener.swipeChanged(this, motionProcessor.currentSwipeDirection);
+                listener.trigger();
+                //listener.swipeChanged(this, motionProcessor.currentSwipeDirection);
         }
 
 

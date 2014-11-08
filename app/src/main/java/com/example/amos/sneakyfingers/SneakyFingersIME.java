@@ -17,8 +17,9 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
     private View keyboardView;
     private SneakyGestureReceiver leftReceiver;
     private SneakyGestureReceiver rightReceiver;
+    /*
     private Direction leftSwipeDirection;
-    private Direction rightSwipeDirection;
+    private Direction rightSwipeDirection;*/
     private Map<DirectionPair, Integer> gestureKeyMap = new HashMap<DirectionPair, Integer>();
 
     @Override
@@ -53,7 +54,32 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
 
 
     @Override
+    public void trigger() {
+        Direction ls = leftReceiver.motionProcessor.currentSwipeDirection;
+        Direction rs = rightReceiver.motionProcessor.currentSwipeDirection;
+
+        if ((ls != Direction.NONE) && (rs != Direction.NONE)) {
+            Log.i("SneakyFingers", "swipe: " + ls + "  |-----|  " + rs);
+            InputConnection ic = getCurrentInputConnection();
+            DirectionPair combination = new DirectionPair(ls, rs);
+            Integer key_code = gestureKeyMap.get(combination);
+            if ((key_code != null) && (key_code.intValue() != KeyEvent.KEYCODE_UNKNOWN)) {
+                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, key_code));
+                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, key_code));
+
+            }
+
+            leftReceiver.motionProcessor.reset();
+            rightReceiver.motionProcessor.reset();
+        }
+
+    }
+
+    @Override
     public void swipeChanged(SneakyGestureReceiver view, Direction dir) {
+    }
+        /*
+
         String source;
         if (view == leftReceiver) {
             leftSwipeDirection = dir;
@@ -72,20 +98,14 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
             if ((key_code != null) && (key_code.intValue() != KeyEvent.KEYCODE_UNKNOWN)) {
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, key_code));
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, key_code));
+
+                rightReceiver.motionProcessor.reset();
+                leftReceiver.motionProcessor.reset();
+
             }
-            /*
-            if (((leftSwipeDirection == Direction.BOTTOM_LEFT) && (rightSwipeDirection == Direction.BOTTOM_LEFT)) ||
-                    ((leftSwipeDirection == Direction.TOP_RIGHT) && (rightSwipeDirection == Direction.TOP_RIGHT))) {
-                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
-                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL));
-            }
-            else {
-                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_A));
-                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_A));
-            }*/
         }
 
-    }
+    }*/
 
     void defineDestureKeyMap() {
         gestureKeyMap.put(new DirectionPair(Direction.TOP, Direction.TOP), KeyEvent.KEYCODE_E);

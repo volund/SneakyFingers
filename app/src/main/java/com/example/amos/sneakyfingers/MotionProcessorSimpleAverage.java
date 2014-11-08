@@ -88,5 +88,15 @@ public class MotionProcessorSimpleAverage {
         return (points.size() >= POINT_LIST_SIZE);
     }
 
+    public void emptyPointsArray() {
+        points.clear();
+        deltas.clear();
+        delta_regions.clear();
+    }
+
+    public void reset() {
+        Log.i("SneakyFingers", "resetting...");
+        emptyPointsArray();
+    }
 
 }
