@@ -23,4 +23,20 @@ public enum Direction {
 
         return code;
     }
+
+    public String stringSymbol() {
+        String symbol = "?";
+        switch(this){
+            case NONE: symbol = "O"; break;
+            case TOP: symbol = "↑"; break;
+            case BOTTOM: symbol = "↓"; break;
+            case LEFT: symbol = "←"; break;
+            case RIGHT: symbol = "→"; break;
+            case TOP_RIGHT: symbol = "↗"; break;
+            case TOP_LEFT: symbol = "↖"; break;
+            case BOTTOM_RIGHT: symbol = "↘"; break;
+            case BOTTOM_LEFT: symbol = "↙"; break;
+        }
+        return symbol;
+    }
 }

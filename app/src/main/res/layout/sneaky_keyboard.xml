@@ -1,34 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+
+    <LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+       android:layout_width="match_parent"
+     android:layout_height="match_parent">
 
 
-    <com.example.amos.sneakyfingers.SneakyGestureReceiver
-        android:id="@+id/leftrcv"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="110dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:text=""/>
+        <com.example.amos.sneakyfingers.SneakyGestureReceiver
+         android:id="@+id/leftrcv"
+         android:layout_width="0dp"
+         android:layout_weight="1"
+         android:layout_height="110dp"
+         android:layout_marginBottom="5dp"
+         android:layout_marginTop="5dp"
+         android:text=""
+         android:background="@drawable/grid"/>
 
-    <Button
-        android:id="@+id/change_input_methods"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="+" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <com.example.amos.sneakyfingers.SneakyGestureReceiver
-        android:id="@+id/rightrcv"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="110dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:text="" />
+            <Button
+              android:id="@+id/change_input_methods"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="+" />
 
-</LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/leftPreviewLabel"
+                android:textAlignment="center"
+                android:textColor="#ff000000"
+                android:layout_gravity="left" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/rightPreviewLabel"
+                android:textAlignment="center"
+                android:textColor="#ff000000"
+                android:layout_gravity="right" />
+
+        </LinearLayout>
+
+        <com.example.amos.sneakyfingers.SneakyGestureReceiver
+         android:id="@+id/rightrcv"
+         android:layout_width="0dp"
+         android:layout_weight="1"
+         android:layout_height="110dp"
+         android:layout_marginBottom="5dp"
+         android:layout_marginTop="5dp"
+         android:text=""
+         android:background="@drawable/grid" />
+
+    </LinearLayout>

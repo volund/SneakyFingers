@@ -3,12 +3,17 @@ package com.example.amos.sneakyfingers;
 import android.inputmethodservice.InputMethodService;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Shader.TileMode;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.view.inputmethod.InputConnection;
 import android.widget.Button;
+import android.widget.TextView;
+
 import android.util.Log;
 import java.util.Map;
 import java.util.HashMap;
@@ -17,6 +22,8 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
     private View keyboardView;
     private SneakyGestureReceiver leftReceiver;
     private SneakyGestureReceiver rightReceiver;
+    private TextView leftPreview;
+    private TextView rightPreview;
     /*
     private Direction leftSwipeDirection;
     private Direction rightSwipeDirection;*/
@@ -28,8 +35,13 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
 
         keyboardView = getLayoutInflater().inflate(R.layout.sneaky_keyboard, null);
 
+        leftPreview = (TextView)keyboardView.findViewById(R.id.leftPreviewLabel);
+        rightPreview = (TextView)keyboardView.findViewById(R.id.rightPreviewLabel);
         leftReceiver = (SneakyGestureReceiver)keyboardView.findViewById(R.id.leftrcv);
         rightReceiver = (SneakyGestureReceiver)keyboardView.findViewById(R.id.rightrcv);
+        fixBackgroundRepeat(leftReceiver);
+        fixBackgroundRepeat(rightReceiver);
+
 
         leftReceiver.listener = this;
         rightReceiver.listener = this;
@@ -52,6 +64,16 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
         return keyboardView;
     }
 
+    public static void fixBackgroundRepeat(View view) {
+        Drawable bg = view.getBackground();
+        if(bg != null) {
+            if(bg instanceof BitmapDrawable) {
+                BitmapDrawable bmp = (BitmapDrawable) bg;
+                bmp.mutate(); // make sure that we aren't sharing state anymore
+                bmp.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
+            }
+        }
+    }
 
     @Override
     public void trigger() {
@@ -77,6 +99,11 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
 
     @Override
     public void swipeChanged(SneakyGestureReceiver view, Direction dir) {
+        TextView preview = (view == leftReceiver ? leftPreview : rightPreview);
+        //if (dir != Direction.NONE) {
+         preview.setText(dir.stringSymbol());
+        //}
+
     }
         /*
 

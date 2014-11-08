@@ -4,6 +4,8 @@ package com.example.amos.sneakyfingers;
  * Created by amos on 01/11/14.
  */
 public class Point {
+    public double x;
+    public double y;
 
     Point(double xval, double yval) {
         x = xval;
@@ -46,10 +48,11 @@ public class Point {
 
     }
 
+    double length() {
+        return Math.sqrt(x*x + y*y);
+    }
     @Override
     public String toString(){
         return "<Point (" + x + ", " + y + ")>";
     }
-    public double x;
-    public double y;
 }

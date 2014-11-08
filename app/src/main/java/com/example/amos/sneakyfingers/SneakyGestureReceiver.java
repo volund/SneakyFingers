@@ -5,6 +5,7 @@ import android.view.View;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.util.Log;
 
 public class SneakyGestureReceiver extends View  {
     public MotionProcessorSimpleAverage motionProcessor;
@@ -27,10 +28,21 @@ public class SneakyGestureReceiver extends View  {
         motionProcessor.processMotionEvent(event);
 
         if (motionProcessor.hasNewSwipeDirection()) {
+            listener.swipeChanged(this, motionProcessor.currentSwipeDirection);
+        }
+
+        /*
+        // trigger based on swipe direction change
+        if (motionProcessor.hasNewSwipeDirection()) {
             if (listener != null)
                 listener.trigger();
-                //listener.swipeChanged(this, motionProcessor.currentSwipeDirection);
-        }
+        }*/
+
+        // trigger based on distance swiped
+        double threshold = 50;
+        if (motionProcessor.distance >= threshold)
+            listener.trigger();
+
 
 
         return true;

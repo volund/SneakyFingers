@@ -17,29 +17,17 @@ public class MotionProcessorSimpleAverage {
     public ArrayList<Direction> delta_regions = new ArrayList<Direction>();
     public Direction currentSwipeDirection = Direction.NONE;
     public Direction previousSwipeDirection = Direction.NONE;
+    public double distance = 0;
 
     public void processMotionEvent(MotionEvent event) {
-        //Log.i("MotionProcessorSimpleAverage", "processing event: " + event);
-
         Point pt = new Point(event.getX(0), event.getY(0));
         processPoint(pt);
-
-
     }
 
     public void processPoint(Point pt) {
-        //Log.i("MotionProcessorSimpleAverage", "got point: " + pt);
         pushPoint(pt);
         previousSwipeDirection = currentSwipeDirection;
         currentSwipeDirection = determineDirection();
-
-        /*
-        Log.i("MotionProcessorSimpleAverage", "points: " + points);
-        Log.i("MotionProcessorSimpleAverage", "deltas: " + deltas);
-        Log.i("MotionProcessorSimpleAverage", "regions: " + delta_regions);
-        */
-
-        //Log.i("MotionProcessorSimpleAverage", "current swipe: " + currentSwipeDirection);
     }
 
     public Direction determineDirection() {
@@ -73,6 +61,7 @@ public class MotionProcessorSimpleAverage {
         if (size > 1) {
             Point prev_pt = points.get(size - 2);
             Point delta = prev_pt.subtractFrom(pt);
+            distance += delta.length();
             deltas.add(delta);
             delta_regions.add(delta.region());
 ;        }
@@ -97,6 +86,7 @@ public class MotionProcessorSimpleAverage {
     public void reset() {
         Log.i("SneakyFingers", "resetting...");
         emptyPointsArray();
+        distance = 0;
     }
 
 }
