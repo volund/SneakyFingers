@@ -27,7 +27,7 @@ public enum Direction {
     public String stringSymbol() {
         String symbol = "?";
         switch(this){
-            case NONE: symbol = "O"; break;
+            case NONE: symbol = "\u00B7"; break;
             case TOP: symbol = "↑"; break;
             case BOTTOM: symbol = "↓"; break;
             case LEFT: symbol = "←"; break;

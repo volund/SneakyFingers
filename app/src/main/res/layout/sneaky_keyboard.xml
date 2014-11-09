@@ -3,8 +3,9 @@
 
     <LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="horizontal"
-       android:layout_width="match_parent"
-     android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black">
 
 
         <com.example.amos.sneakyfingers.SneakyGestureReceiver
@@ -15,7 +16,7 @@
          android:layout_marginBottom="5dp"
          android:layout_marginTop="5dp"
          android:text=""
-         android:background="@drawable/grid"/>
+         android:background="@drawable/grid_background"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -34,7 +35,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:id="@+id/leftPreviewLabel"
                 android:textAlignment="center"
-                android:textColor="#ff000000"
+                android:textColor="#ffffffff"
                 android:layout_gravity="left" />
 
             <TextView
@@ -43,7 +44,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:id="@+id/rightPreviewLabel"
                 android:textAlignment="center"
-                android:textColor="#ff000000"
+                android:textColor="#ffffffff"
                 android:layout_gravity="right" />
 
         </LinearLayout>
@@ -56,6 +57,6 @@
          android:layout_marginBottom="5dp"
          android:layout_marginTop="5dp"
          android:text=""
-         android:background="@drawable/grid" />
+         android:background="@drawable/grid_background" />
 
     </LinearLayout>

@@ -84,7 +84,6 @@ public class MotionProcessorSimpleAverage {
     }
 
     public void reset() {
-        Log.i("SneakyFingers", "resetting...");
         emptyPointsArray();
         distance = 0;
     }
