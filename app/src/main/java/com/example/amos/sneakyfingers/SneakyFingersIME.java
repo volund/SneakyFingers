@@ -94,9 +94,9 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
     @Override
     public void swipeChanged(SneakyGestureReceiver view, Direction dir) {
         TextView preview = (view == leftReceiver ? leftPreview : rightPreview);
-        //if (dir != Direction.NONE) {
+        if (dir != Direction.NONE) {
          preview.setText(dir.stringSymbol());
-        //}
+        }
 
     }
 
