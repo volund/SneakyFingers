@@ -39,7 +39,8 @@ public class SneakyGestureReceiver extends View  {
         }*/
 
         // trigger based on distance swiped
-        double threshold = 50;
+        //Log.i("SneakyFingers", "distance: " + motionProcessor.distance);
+        double threshold = 60;
         if (motionProcessor.distance >= threshold)
             listener.trigger();
 
