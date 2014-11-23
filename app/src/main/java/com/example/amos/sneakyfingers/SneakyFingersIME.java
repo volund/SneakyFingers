@@ -22,7 +22,9 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
     private SneakyGestureReceiver rightReceiver;
     private TextView leftPreview;
     private TextView rightPreview;
-    private SneakyLayout gestureLayout = new SneakyLayoutB();
+    private SneakyLayout gestureLayout = new SneakyLayoutC();
+
+    private boolean shiftEnabled = false;
 
     @Override
     public View onCreateInputView() {
@@ -33,9 +35,6 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
         rightPreview = (TextView)keyboardView.findViewById(R.id.rightPreviewLabel);
         leftReceiver = (SneakyGestureReceiver)keyboardView.findViewById(R.id.leftrcv);
         rightReceiver = (SneakyGestureReceiver)keyboardView.findViewById(R.id.rightrcv);
-        //fixBackgroundRepeat(leftReceiver);
-        //fixBackgroundRepeat(rightReceiver);
-
 
         leftReceiver.listener = this;
         rightReceiver.listener = this;
@@ -58,37 +57,50 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
         return keyboardView;
     }
 
-    /*
-    public static void fixBackgroundRepeat(View view) {
-        Drawable bg = view.getBackground();
-        if(bg != null) {
-            if(bg instanceof BitmapDrawable) {
-                BitmapDrawable bmp = (BitmapDrawable) bg;
-                bmp.mutate(); // make sure that we aren't sharing state anymore
-                bmp.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
-            }
-        }
-    }*/
-
     @Override
     public void trigger() {
-        Direction ls = leftReceiver.motionProcessor.currentSwipeDirection;
-        Direction rs = rightReceiver.motionProcessor.currentSwipeDirection;
+        Direction ls = leftReceiver.motionProcessor.getCurrentSwipeDirection();
+        Direction rs = rightReceiver.motionProcessor.getCurrentSwipeDirection();
 
         if ((ls != Direction.NONE) && (rs != Direction.NONE)) {
             //Log.i("SneakyFingers", "swipe: " + ls + "  |-----|  " + rs);
             InputConnection ic = getCurrentInputConnection();
             Integer key_code = gestureLayout.keyCodeForDirections(ls, rs);
             if ((key_code != null) && (key_code.intValue() != KeyEvent.KEYCODE_UNKNOWN)) {
+                /*
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, key_code));
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, key_code));
+                */
+                ic.commitText("?", 1);
 
             }
 
             leftReceiver.motionProcessor.reset();
             rightReceiver.motionProcessor.reset();
+            shiftEnabled = false;
         }
 
+    }
+
+    @Override
+    public void tapped(SneakyGestureReceiver view, long timestamp) {
+
+        InputConnection ic = getCurrentInputConnection();
+        if (view == leftReceiver) {
+            shiftEnabled = !shiftEnabled;
+            ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT));
+            ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_RIGHT));
+        }
+        if (view == rightReceiver) {
+            if (shiftEnabled) {
+                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL));
+            }
+            else {
+                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE));
+                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SPACE));
+            }
+        }
     }
 
     @Override

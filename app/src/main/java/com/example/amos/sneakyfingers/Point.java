@@ -51,6 +51,9 @@ public class Point {
     double length() {
         return Math.sqrt(x*x + y*y);
     }
+    double length(double x_scale, double y_scale) {
+        return Math.sqrt(x_scale*x*x_scale*x + y_scale*y*y_scale*y);
+    }
     @Override
     public String toString(){
         return "<Point (" + x + ", " + y + ")>";

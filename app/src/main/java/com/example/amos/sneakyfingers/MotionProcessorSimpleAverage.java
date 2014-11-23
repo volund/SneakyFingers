@@ -8,7 +8,7 @@ import android.util.Log;
 /**
  *
  */
-public class MotionProcessorSimpleAverage {
+public class MotionProcessorSimpleAverage implements MotionProcessor {
 
     static final int POINT_LIST_SIZE = 11;
 
@@ -53,8 +53,17 @@ public class MotionProcessorSimpleAverage {
         return (currentSwipeDirection != previousSwipeDirection);
     }
 
+    public boolean shouldTrigger() {
+        double threshold = 55;
+        return distance >= threshold;
+    }
+
+    public Direction getCurrentSwipeDirection() {
+        return currentSwipeDirection;
+    }
 
     public void pushPoint(Point pt) {
+        pt.x = pt.x / 1.333333333333;
         points.add(pt);
 
         int size = points.size();
