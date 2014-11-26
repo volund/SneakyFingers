@@ -65,14 +65,11 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
         if ((ls != Direction.NONE) && (rs != Direction.NONE)) {
             //Log.i("SneakyFingers", "swipe: " + ls + "  |-----|  " + rs);
             InputConnection ic = getCurrentInputConnection();
-            Integer key_code = gestureLayout.keyCodeForDirections(ls, rs);
-            if ((key_code != null) && (key_code.intValue() != KeyEvent.KEYCODE_UNKNOWN)) {
-                /*
-                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, key_code));
-                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, key_code));
-                */
-                ic.commitText("?", 1);
-
+            String str = gestureLayout.stringForDirections(ls, rs);
+            if (shiftEnabled)
+                str = str.toUpperCase();
+            if (!str.equals("")) {
+                ic.commitText(str, 1);
             }
 
             leftReceiver.motionProcessor.reset();

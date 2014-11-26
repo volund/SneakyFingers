@@ -94,4 +94,8 @@ public class SneakyLayoutA implements SneakyLayout {
         return key_code.intValue();
     }
 
+    public String stringForDirections(Direction first, Direction second) {
+        return "?";
+    }
+
 }
