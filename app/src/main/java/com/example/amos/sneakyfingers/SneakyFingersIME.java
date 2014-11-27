@@ -22,6 +22,8 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
     private SneakyGestureReceiver rightReceiver;
     private TextView leftPreview;
     private TextView rightPreview;
+    private TextView shiftLabel;
+    private Button inputMethodsButton;
     private SneakyLayout gestureLayout = new SneakyLayoutC();
 
     private boolean shiftEnabled = false;
@@ -35,11 +37,12 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
         rightPreview = (TextView)keyboardView.findViewById(R.id.rightPreviewLabel);
         leftReceiver = (SneakyGestureReceiver)keyboardView.findViewById(R.id.leftrcv);
         rightReceiver = (SneakyGestureReceiver)keyboardView.findViewById(R.id.rightrcv);
+        shiftLabel = (TextView)keyboardView.findViewById(R.id.shift_label);
 
         leftReceiver.listener = this;
         rightReceiver.listener = this;
 
-        Button inputMethodsButton = (Button)keyboardView.findViewById(R.id.change_input_methods);
+        inputMethodsButton = (Button)keyboardView.findViewById(R.id.change_input_methods);
 
         inputMethodsButton.setOnClickListener(new OnClickListener() {
 
@@ -54,6 +57,8 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
                 }
             }});
 
+
+        updateShiftStatus();
         return keyboardView;
     }
 
@@ -76,11 +81,12 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
             rightReceiver.motionProcessor.reset();
             shiftEnabled = false;
         }
-
+        updateShiftStatus();
     }
 
     @Override
     public void tapped(SneakyGestureReceiver view, long timestamp) {
+        Log.i("SneakyFingers", "tapped");
 
         InputConnection ic = getCurrentInputConnection();
         if (view == leftReceiver) {
@@ -98,6 +104,7 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SPACE));
             }
         }
+        updateShiftStatus();
     }
 
     @Override
@@ -107,6 +114,13 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
          preview.setText(dir.stringSymbol());
         }
 
+    }
+
+    void updateShiftStatus() {
+        if (shiftEnabled)
+            inputMethodsButton.setText("+");
+        else
+            inputMethodsButton.setText("x");
     }
 
 }
