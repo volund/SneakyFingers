@@ -83,24 +83,16 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
     }
 
     @Override
-    public void tapped(SneakyGestureReceiver view, long timestamp) {
-        Log.i("SneakyFingers", "tapped");
-
+    public void tapped(SneakyGestureReceiver view, double x, double y, long timestamp) {
         InputConnection ic = getCurrentInputConnection();
-        if (view == leftReceiver) {
-            shiftEnabled = !shiftEnabled;
-            ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT));
-            ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_RIGHT));
+        Log.i("SneakyFingers", "tapped: " + x);
+        if ((view == leftReceiver) && (x <= 55)) {
+            ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+            ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL));
         }
-        if (view == rightReceiver) {
-            if (shiftEnabled) {
-                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
-                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL));
-            }
-            else {
-                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE));
-                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SPACE));
-            }
+        if ((view == rightReceiver) && (x <= 55)) {
+            ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE));
+            ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SPACE));
         }
         updateShiftStatus();
     }

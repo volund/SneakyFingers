@@ -26,7 +26,7 @@ public class SneakyGestureReceiver extends View  {
         if (event.getActionMasked() == MotionEvent.ACTION_UP) {
             long press_duration = event.getEventTime() - event.getDownTime();
             if (press_duration <= max_tap_duration)
-                listener.tapped(this, event.getEventTime());
+                listener.tapped(this, event.getX(), event.getY(), event.getEventTime());
         }
 
         motionProcessor.processMotionEvent(event);
