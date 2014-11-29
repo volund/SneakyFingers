@@ -14,7 +14,8 @@ public class SneakyGestureReceiver extends View  {
     public SneakyGestureReceiverListener listener;
     public SneakyGestureReceiver(Context context, AttributeSet attrs) {
         super(context, attrs);
-        motionProcessor = new MotionProcessorSimpleAverage();
+        //motionProcessor = new MotionProcessorSimpleAverage();
+        motionProcessor = new MotionProcessorMod();
     }
 
     @Override
@@ -26,7 +27,6 @@ public class SneakyGestureReceiver extends View  {
             long press_duration = event.getEventTime() - event.getDownTime();
             if (press_duration <= max_tap_duration)
                 listener.tapped(this, event.getEventTime());
-            Log.i("SneakyFingers", "event duration: " + press_duration + "ms");
         }
 
         motionProcessor.processMotionEvent(event);

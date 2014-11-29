@@ -22,7 +22,6 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
     private SneakyGestureReceiver rightReceiver;
     private TextView leftPreview;
     private TextView rightPreview;
-    private TextView shiftLabel;
     private Button inputMethodsButton;
     private SneakyLayout gestureLayout = new SneakyLayoutC();
 
@@ -37,7 +36,6 @@ public class SneakyFingersIME extends InputMethodService implements SneakyGestur
         rightPreview = (TextView)keyboardView.findViewById(R.id.rightPreviewLabel);
         leftReceiver = (SneakyGestureReceiver)keyboardView.findViewById(R.id.leftrcv);
         rightReceiver = (SneakyGestureReceiver)keyboardView.findViewById(R.id.rightrcv);
-        shiftLabel = (TextView)keyboardView.findViewById(R.id.shift_label);
 
         leftReceiver.listener = this;
         rightReceiver.listener = this;
